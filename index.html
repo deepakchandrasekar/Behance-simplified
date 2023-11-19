@@ -598,7 +598,7 @@ function displayImages(imagesToDisplay = images) {
 
     imagesToDisplay.forEach((image, index) => {
         const imgElement = document.createElement('img');
-        imgElement.src = `images/${image.name}.jpg`;
+        imgElement.src = `${image.name}.jpg`;
         imgElement.alt = image.name;
 
         
