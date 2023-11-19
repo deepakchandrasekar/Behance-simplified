@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="chat.css">
+    <link rel="stylesheet" href="home.css">
+    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Behance</title>
+    <style>
+       
+        header {
+            position: relative;
+            overflow: hidden;
+            color: #ffffff;
+            padding:0px 20px;
+            text-align: left;
+            image-rendering: pixelated; 
+            margin-top: 0;
+        }
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            
+            background-image: url('https://mir-s3-cdn-cf.behance.net/projects/808/5a7bc756857533.Y3JvcCwxMjAyLDk0MSwwLDUzMQ.jpg '); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: brightness(0.4); 
+            z-index: -1;
+            
+        }
+
+        header a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            margin-right: 20px;
+            text-align: left;
+            
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+       header hr {
+            margin: 0;
+            filter: brightness(0.6);
+        }
+
+        #button-container {
+            text-align: right;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            margin-top: 0;
+        }
+        
+        #adobe-btn,
+        #login-btn,
+        #sign-btn,
+        #freetrial-btn {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        #search-container {
+    position: relative;
+    display: inline-block;
+    width: 90%;
+    max-width: 1200px; 
+    padding: 20px;
+}
+
+#search-input {
+    padding: 10px;
+    width: calc(100% - 20px); 
+    box-sizing: border-box;
+    border: 1px solid #ced4da;
+    border-radius: 15px;
+    font-size: 16px;
+    outline: none;
+    background-color: #ece8e8;
+}
+
+#autocomplete-list {
+    width: 95%;
+   
+    position: absolute;
+    z-index: 1;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 15px 15px;
+    display: none;
+    
+}
+
+
+
+
+        #autocomplete-list li {
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+           
+            
+            text-align: left;   
+        }
+
+        #autocomplete-list li:last-child {
+            border-bottom: none; 
+        }
+
+        #autocomplete-list li:hover {
+            background-color: #e9ecef;
+        }
+
+        h1 {
+            font-size: 70px;
+            padding-bottom: 0;
+            margin-bottom: 10px; 
+        }
+
+        h4 {
+            margin-top: 0;
+        }
+        center {
+    text-align: center;
+}
+.filter button{
+            height: 36px;
+            width: 150px;
+            padding: 10px;
+            border: 1px solid #909ead;
+            border-radius:20px;
+            cursor: pointer;
+            margin: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            background-color: white;
+            
+        }
+        .filter button:hover{
+            background-color: #edeef0;
+        }
+
+
+.custom-div {
+    display: inline-block; 
+    vertical-align: top;
+    margin: 20px;
+    padding: 10px;
+    background-color: rgba(97, 120, 145, 0.8);
+    color: #ffffff;
+    border-radius: 10px;
+    text-align: left;
+    width: 400px;
+    transition: background-color 0.3s; 
+    position: relative; 
+}
+.custom-div:hover {
+    background-color: rgba(152, 159, 162, 0.8);
+}
+.desc {
+    display: inline-block; 
+    max-width: calc(100% - 90px);
+    padding: 0 0 0 5px;
+}
+.search{
+    display: grid;
+    grid-template-columns: 0fr 9fr 1.5fr;
+}
+
+
+.sortContainer{
+   background-color: red;
+    
+    height: 20px;
+    width: 10px;
+}
+
+select{
+    border: none;
+     
+}
+
+#imageContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 360px);
+    gap: 10px;
+    justify-content: space-around;
+        }
+
+        .imageCard {
+            text-align: center;
+            position: relative;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            margin-top: 10px;
+        }
+
+        .likeButton {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+            background-color: red;
+            height: 25px;
+            width: 25px;
+            color: #fff;
+            padding: 2px;
+            border: none;
+            border-radius: 50%;
+            /* transition: 5s; */
+            font-size: 20px;
+        }
+        .likeButton.expanded {
+    transform: scale(4);
+    opacity: 0;
+    transition: transform 3s ease, opacity 3s ease;
+}
+.imageCard:hover img {
+    filter: brightness(0.5);
+    transform: scale(1.1); 
+    transition:  0.5s ease;
+}
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    
+}
+
+.modal-content {
+    margin-top: 100px;
+    margin-left: 250px;
+    display: block;
+    max-width: 80%;
+    max-height: 80%;
+    
+}
+
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+footer{
+    position: fixed;
+    bottom: 0;
+            width: 100%;
+            background-color: white;
+            color: black;
+            text-align: center;
+            /* padding: 4px; */
+            border-top: 0.3px solid grey;
+        }
+
+        footer button{
+            font-weight: bolder;
+            float: right;
+            margin-right: 15px;
+        }
+        footer .lef a{
+            color: black;
+            text-decoration: none;
+            /* font-weight: 700; */
+            margin-right: 20px;
+            text-align: left;
+            float: left;
+            font-size: x-small;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .lef a:hover{
+            color:blue;
+        }
+
+        .foot{
+            margin-bottom: 100px;
+            width: 400px;
+            display: grid;
+            grid-template-columns:3fr 1fr 1fr 1fr;
+            margin-left: 600px;
+            cursor: pointer;
+            margin-top: 200px;
+        }
+
+        .foot button{
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            margin-left: 10px;
+            cursor: pointer;
+
+        }
+
+
+
+
+        @media (max-width: 600px) {
+            #search-input,
+            #autocomplete-list {
+                width: 100%;
+                max-width: none;
+            }
+        }
+
+
+
+
+
+        
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <a style="text-decoration: none; font-size: 28px;">Behance</a>
+                <a href="#">For You</a>
+                <a href="#">Hire</a>
+                <a href="#">Discover</a>
+                <a href="#">assets</a>
+                <a href="#">Jobs</a>
+            </div>
+            <div id="button-container">
+                <i class='bx bxs-bell bx-tada' style='color:#ffffff;cursor: pointer;'></i>
+                <button style=" background-color:white; color:blue;" id="login-btn">Log in</button>
+                <button id="sign-btn">Sign up</button>&nbsp; |
+                <button style="background-color: white; color:black" id="freetrial-btn"><i class='bx bxs-speaker'
+                        style='color:#f58308'></i>Free Trial</button>
+                <button style="background-color: black; color:white" id="adobe-btn"><i class='bx bxl-adobe'
+                        style='color:#fdfdfd'></i>Adobe</button>
+            </div>
+        </div>
+        <hr>
+        <center>
+            <h1>Showcase Your Work & Get Paid</h1>
+        </center>
+        <center>
+            <h4>Join Behance, the world's largest creative network</h4>
+        </center>
+        <center>
+            <div class="custom-div">
+                
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAA79JREFUSEvFlkuIXFUQhv+/M9OnbnREJEGyUKPixPdOTEQh4ELBB2QTRRFDiEFcSCCICSoY0RhjEIOIDCg+EBQG34oigmQUNKObQFQ0aBQ1kvgAJXrP6Zm+v5ye29e53T3dt91MrfpRVd+p1zlFLJJwkbgYCixpCWZnVyPLVkJa0To0eQS12mGMjEyTbFYNpBJY3p8DcjukdQBO7ulc+h3kawAeptl3gw7QFyxpKULYBeAOAEsGOcv/b0B6FGYPkGwsZLMgWGm6EuRbAC6sCPwbwNKY/Ja+NA2z60ke7WXfE6wQzkOWfQzylIrQqPYOarV70Ww+CfKyHP4zzNaQ/LHTTxdY0qnwfj/IM4aAxibbRucekUQ0GvdB2pHbH4Rzq0nGjBTSDU7Tl0HeUAkq7QP5J4B9cG5ivnN5fxeA3bmfvTTbsiBYIVwM6UAlaCymWf/m9P5VAHESApw7i3H0cikZKk1fAHlLJbD0G5NkeT9dhXABpIN5vXcySe7pAksaRQh/ADgRwD95h/bz+zTNbht0SHn/LoCrARyi2Xg3OE2vBPlB6w/yJkg3A7imh+P3Ie2G2RTJmYHgNN0I8plcb5xmh1qItqEajVuRZc+1vjt3GoBfEcIbAK4qOZd2MEnuHwQs/IZwPqQv8u/X0eztMnh+FzpXj9FIcgjhPQBrC9CwYGkMIfyV22+h2d5O8FYAe/KIx0gej5+74MODlyOEYzl4K80eK4NDuBHSS7nCKpp9U6RLMoSQ5t35A4DvS6kmA8gp1OuPd14Umpm5As3mVN476+ncZGeN43P3Se58I5Pk2fnO5b0q1HWSZus77G4H8FTrt1rtEtbrn5fB8arz/hjIZQBep1kc/P9K672PbTcAfpxmYyW7NP0I5OWQjsJsBclWAOULxPsJAJtjaSGdzSQ5XKTb+ziL8bUa6Qeff5vJ+2tzm2jyBM3ubNt2glcB+Kp1IOl5JsmGjqirwDMAcQy3A4j1vAjADKRxJknRG70eiRdBxssjXiRFMwwbeUdWJmgWa11Ir2dxGUKYBnBmK+XA3XBuT7s20VJpugFkqfn6pP9LOBff5PYsz8XUy6C1Y0mfFouAFJeCTTT7OgevBfnhwC6XjsDsUpI/deoOWn3ezGvUtpsEGesWaxYXu4VF2g+zdSR/6aU0aNk7ASE8CCB2Y21ghHMKcdnbBbOH/teyV+rmEM5Flm0DGWf7pJ4HmFtvX4FzO0nG262vVNqri46WRjA7uwZZdnppoSe/xejoZyTjKFWSocCVPFZUWjTwv9tyki7oUB9sAAAAAElFTkSuQmCC"/>
+                <div class="desc">
+                    
+                    <p>Share your work and get discoverd by millions of creatives and clients</p>
+                </div>
+            </div>
+            <div class="custom-div">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAA0dJREFUSEvFlk2IHFUQx3//zpj06zGiJIgKIl40omAQwYOHoJCDJ0UIImo0BmQlHjYgBteF3cWYD4ySg0IUguIpaA7qHr3oIYjgQcGLORkEQcwhmnT3zDrdJW+2t6endz52l1nTt35dr37VVf9Xr8R1enSduGwYbK3WXrIsVLO5uJHg1w22dvsBsuwM8GgB/IFGY0pbt/60ngDWDLY4vgPpBPA8rMqUAeeAI4qi39cSwFiwmW0nTWeAw8C2wum/wGnMEqQjQNi37tzbkq6OCmAo2MwaJMlB4CjSzoqT75GelXOX/JrF8e2FzYEyE2aXgVmi6KykzqAABoItjp9EOgncO2BThtlZomhW0l8r363dvo9O5z2kJyp7fsXsDTWbX9f99IFtaWk3nc4HFeF4++/YsuUQWfY4ZgtItxROrnWDC8NTklplAGm6hzw/jbS7ArtAo/FaVYAl2NL0Jcw+qRj/htlhNZtflk7NdpAkx5Beqdj9gTRDGH4myYsMMxOt1nOYHQPuLG2lA3LuU//eA8fxPNJcHxhmcO7cisMygKWlB+l0PgIeKe3NfkGaUhRdMLOAVuuFbobgrorNgprN+XHgZXuznwmCaTn3bb1OlqYvkucnkG6rfPP1vAfYtUofZusA93YvEgSvKwwvVh2aWUSSzBTHqlGDXcXs/TKTGwR7nznSx4ThvKQ/i3reSprOAlPADRXwIs7tl3TFkqRbe5/6tad6Vb66Cy3MTiLdCByqNJCedQUySfCgcH4kCN4kz7+p/91mgX3NZ3HuvFf/IMjmgKXHqoovIF5U+1d6wP8DjuOjRJHvZlfKcz9BcfVqXPvj2lHbRpr6W+34cFUnyT7g88EiHrE6BGxJ8jRwCri7snufouh8X+fqHrPlS8JPF71WOC6Seo3b7fvJsg+BPZWtwy+JvhTF8VPFtehb3+inAJvZTpLkONLLQFBsulhci1/VnYweBNL0VczmkHYMpQfBXvL8IczeQrqpqOVlpAWcO7OuQaAmkJuL0We61hKXzcz+KYGwPBI5946kv0elauzMVTkS/l59F3hmgMPJD3t1iMXxw0h+SlkR4OaOt6sCSBL/57mi6Itx+hv0fc2p3ojzidR40uD/AMKslS4wywleAAAAAElFTkSuQmCC"/>
+
+                <div class="desc">
+                    <p>Share your work and get discoverd by millions of creatives and clients</p>
+                </div>
+            </div>
+
+            <div class="custom-div">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAddJREFUSEvtlr9rFEEUxz/fjXezC0oKGytDLBQhUbCx8ccJaWNlZeU/IIilWIiQUmzsbPwHLBQbQTAqgo2EYEBIIdikSyGIuzNH9ombC9zK3u3eXeAUbrph3nufed83jzdiSktT4jIy2MxECMuYXUI6jtkGzr2W1B0licZgM4sI4SZmD4HFEsRsB3igJHnaFN4cnGWPgTs1gW8rjp80gTcCW5atAi+LgGbfiaK7tNvvi30IHfL8EdJJIGdu7oparY918GbgNP2EdBGzXeL4jKTd/sBmdgLvt4FjwHPF8Y2JwWZ2BO9/AS2k+3JurSqopeka0j3A49y8JD8MXpuxhXCBPP/cC7KqOH5VCc6y68CL4kw6J+e+TAZO0w7S2159rylJ1gdk3MjuwLeUsZkdxftN4FRdjUY8/4Zz5yX9rAZ3u5fZ29t/rYe99l/7h2pwv6wHFn/aB571treQFirvVGdnVipTWepq8DslSado4TRdR7o6ADzc7v8BH1atR854Bh5XgZnUpfFW1cfjSvu330zqf0Nq75cwGzrAxy65tCzntgbN4wjvvwKnxwZUO27j3FlJeSW4mEBm84SwAiyR57Vfo6EXjCIDtmi330j60W87WeAJZJka+De3WQouLDlrIgAAAABJRU5ErkJggg=="/>
+
+                <div class="desc">
+                   
+                    <p>Share your work and get discoverd by millions of creatives and clients</p>
+                </div>
+            </div>
+
+        </center>
+        <br><br>
+    </header>
+    <div class="search">
+
+    
+            <div class="filter">
+                <button ><i class='bx bx-filter-alt'></i>&nbsp;Filter</button>
+            </div>
+
+            <div id="search-container">
+                
+                <input type="text" id="search-input" oninput="filterImages()" placeholder="search the creative world at work">
+                <ul id="autocomplete-list"></ul>
+            </div>
+            <div id="sortContainer">
+                <br><label for="sort"><i class='bx bx-sort-up' style='color:#55a7dc'  ></i>Sort by:</label><br>
+                <select id="sort" onchange="sortImages()">
+                    <option value="Recommended">Recommended</option>
+                    <option value="most-viewed">Most-Viewed</option>
+                    <option value="less-viewed">Less-Viewed</option>
+                    
+                </select>
+            </div>
+    </div>
+
+    <hr>
+    
+    
+
+    <div id="imageContainer">
+        <div class="imageCard">
+            <img src="images/image12.jpg" alt="Image1">
+            <p>Nature - Views: 100</p>
+            <button class="likeButton" onclick="handleLike(0)">Like 0</button>
+        </div>
+    
+    </div>
+    
+   
+<div id="imageModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img id="modalImage" class="modal-content">
+</div>
+
+
+
+
+
+
+    <!-- bot -->
+    <div class="chat-bar-collapsible">
+        <button id="chat-button" type="button" class="collapsible">
+            <i id="chat-icon" style="color: #fff;" class="fa fa-fw fa-comments-o"></i>
+        </button>
+
+        <div class="content">
+            <div class="full-chat-block">
+               
+                <div class="outer-container">
+                    <div class="chat-container">
+                        
+                        <div id="chatbox">
+                            <h5 id="chat-timestamp"></h5>
+                            <p id="botStarterMessage" class="botText"><span>Loading...</span></p>
+                        </div>
+
+                        
+                        <div class="chat-bar-input-block">
+                            <div id="userInput">
+                                <input id="textInput" class="input-box" type="text" name="msg"
+                                    placeholder="Tap 'Enter' to send a message">
+                                <p></p>
+                            </div>
+
+                            <div class="chat-bar-icons">
+                                
+                                <i id="chat-icon" style="color: #333;" class="fa fa-fw fa-send"
+                                    onclick="sendButton()"></i>
+                            </div>
+                        </div>
+
+                        <div id="chat-bar-bottom">
+                            <p></p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="foot">
+        
+        <button>Sign up with email</button> 
+        <dotlottie-player src="https://lottie.host/bd86ac72-2ccf-443d-8aa7-11db13d43bb2/436zxv4fd2.json" background="transparent" speed="1" style="width: 50px; height: 50px;" loop autoplay></dotlottie-player>
+         <dotlottie-player src="https://lottie.host/7d245ebf-2fa3-4b2b-a385-cf7eea5711a2/7b7PF8vJJs.json" background="transparent" speed="1" style="width: 50px; height: 50px;" loop autoplay></dotlottie-player>
+        <dotlottie-player src="https://lottie.host/90193344-c2e1-4f80-8fac-821995d272cb/GnSpPGoB6z.json" background="transparent" speed="0.5" style="width: 50px; height: 50px;" loop autoplay></dotlottie-player>
+    
+    </div>
+
+
+
+    <footer>
+        <div class="lef">
+            <a href="#">TOU</a>
+            <a href="#" >privacy</a>
+            <a href="#" >Community</a>
+            <a href="#" >Help</a>
+            <a href="#" >Cookie prefrences</a>
+            <a href="#" >Do not sell or share my personal information</a>
+        </div>
+        <button style="background-color: white; color:black" id="adobe-btn"><i class='bx bxl-adobe'
+            style='color:black'></i>Adobe</button>
+    </footer>
+</body>
+
+
+<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+<script>
+   const originalOrder = [0, 1, 2,3,4,5,6,7,8,9,10,11,12,13,14,15]; 
+
+const images = [
+    { name: 'Image1', views: 100, description: 'Nature' },
+    { name: 'Image2', views: 50, description: 'Nature' },
+    { name: 'Image3', views: 200, description: 'Nature' },
+    { name: 'Image4', views: 150, description: 'Nature' },
+    { name: 'Image5', views: 100, description: 'Nature' },
+    { name: 'Image6', views: 50, description: 'Food' },
+    { name: 'Image7', views: 200, description: 'Food' },
+    { name: 'Image8', views: 150, description: 'Food' },
+    { name: 'Image9', views: 100, description: 'City' },
+    { name: 'Image10', views: 50, description: 'City' },
+    { name: 'Image11', views: 200, description: 'City' },
+    { name: 'Image12', views: 150, description: 'City' },
+    { name: 'Image13', views: 100, description: 'car' },
+    { name: 'Image14', views: 50, description: 'car' },
+    { name: 'Image15', views: 200, description: 'car' },
+    { name: 'Image16', views: 150, description: 'car' },
+    
+];
+
+
+
+
+function filterImages() {
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    const filteredImages = images.filter(image => image.description.toLowerCase().includes(searchTerm));
+    displayImages(filteredImages);
+}
+function sortImages() {
+        const sortValue = document.getElementById('sort').value;
+
+        images.sort((a, b) => {
+            if (sortValue === 'most-viewed') {
+                return b.views - a.views;
+            } else if (sortValue === 'less-viewed') {
+                return a.views - b.views;
+            }
+        });
+
+        displayImages();
+    }
+
+
+
+
+function openModal(imgSrc) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+
+    modal.style.display = 'block';
+    modalImg.src = imgSrc;
+}
+
+function closeModal() {
+    const modal = document.getElementById('imageModal');
+    modal.style.display = 'none';
+}
+
+
+function displayImages(imagesToDisplay = images) {
+    const imageContainer = document.getElementById('imageContainer');
+    imageContainer.innerHTML = '';
+
+    imagesToDisplay.forEach((image, index) => {
+        const imgElement = document.createElement('img');
+        imgElement.src = `images/${image.name}.jpg`;
+        imgElement.alt = image.name;
+
+        
+        imgElement.addEventListener('click', () => openModal(imgElement.src));
+
+        const descriptionAndViews = document.createElement('p');
+        descriptionAndViews.textContent = `${image.description} - Views: ${image.views}`;
+
+        const likeButton = document.createElement('button');
+        likeButton.className = 'likeButton';
+        likeButton.innerHTML = "<i class='bx bxs-happy-heart-eyes'></i>";
+        likeButton.dataset.index = index;
+        likeButton.addEventListener('click', () => handleLike(index, likeButton));
+
+        const container = document.createElement('div');
+        container.className = 'imageCard';
+        container.appendChild(imgElement);
+        container.appendChild(descriptionAndViews);
+        container.appendChild(likeButton);
+
+        imageContainer.appendChild(container);
+    });
+}
+
+
+function handleLike(index, likeButton) {
+   
+    images[index].likes += 1;
+
+  
+    const descriptionAndViews = likeButton.parentElement.querySelector('p');
+    descriptionAndViews.textContent = `${images[index].description} - Views: ${images[index].views}`;
+
+   
+    setTimeout(() => {
+        likeButton.classList.add('expanded');
+    }, 100);
+
+    
+    setTimeout(() => {
+        likeButton.classList.remove('expanded');
+    }, 1800); 
+}
+
+
+
+displayImages();
+
+
+    
+</script>
+
+
+
+   <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script>
+        const searchInput = document.getElementById('search-input');
+        const autocompleteList = document.getElementById('autocomplete-list');
+    
+        
+        searchInput.addEventListener('input', function () {
+            const inputValue = searchInput.value.toLowerCase();
+    
+            
+            fetch(`https://api.datamuse.com/sug?s=${inputValue}`)
+                .then(response => response.json())
+                .then(data => {
+                    
+                    const suggestions = data.map(item => item.word);
+    
+                    
+                    displaySuggestions(suggestions);
+                })
+                .catch(error => {
+                    console.error('Error fetching suggestions:', error);
+                });
+        });
+    
+        
+        autocompleteList.addEventListener('click', function (e) {
+            if (e.target.tagName === 'LI') {
+                searchInput.value = e.target.innerText;
+                autocompleteList.style.display = 'none';
+            }
+        });
+    
+      
+        document.addEventListener('click', function (e) {
+            if (!e.target.matches('#search-input') && !e.target.matches('#autocomplete-list li')) {
+                autocompleteList.style.display = 'none';
+            }
+        });
+    
+       
+        function displaySuggestions(suggestions) {
+            if (suggestions.length === 0 || searchInput.value === '') {
+                autocompleteList.style.display = 'none';
+                return;
+            }
+    
+            const suggestionList = suggestions.map(suggestion => `<li>${suggestion}</li>`).join('');
+            autocompleteList.innerHTML = suggestionList;
+            autocompleteList.style.display = 'block';
+        }
+    </script>
+    
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="static/scripts/responses.js"></script>
+<script src="static/scripts/chat.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</body>
+<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+<Script>
+
+
+// Collapsible
+var coll = document.getElementsByClassName("collapsible");
+
+for (let i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+
+        var content = this.nextElementSibling;
+
+        if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+        }
+
+    });
+}
+
+function getTime() {
+    let today = new Date();
+    hours = today.getHours();
+    minutes = today.getMinutes();
+
+    if (hours < 10) {
+        hours = "0" + hours;
+    }
+
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+
+    let time = hours + ":" + minutes;
+    return time;
+}
+
+
+function firstBotMessage() {
+    let firstMessage = "How's it going?"
+    document.getElementById("botStarterMessage").innerHTML = '<p class="botText"><span>' + firstMessage + '</span></p>';
+
+    let time = getTime();
+
+    $("#chat-timestamp").append(time);
+    document.getElementById("userInput").scrollIntoView(false);
+}
+
+firstBotMessage();
+
+
+function getHardResponse(userText) {
+    let botResponse = getBotResponse(userText);
+    let botHtml = '<p class="botText"><span>' + botResponse + '</span></p>';
+    $("#chatbox").append(botHtml);
+
+    document.getElementById("chat-bar-bottom").scrollIntoView(true);
+}
+
+
+function getResponse() {
+    let userText = $("#textInput").val();
+
+    if (userText == "") {
+        userText = "Hello";
+    }
+
+    let userHtml = '<p class="userText"><span>' + userText + '</span></p>';
+
+    $("#textInput").val("");
+    $("#chatbox").append(userHtml);
+    document.getElementById("chat-bar-bottom").scrollIntoView(true);
+
+    setTimeout(() => {
+        getHardResponse(userText);
+    }, 1000)
+
+}
+
+function buttonSendText(sampleText) {
+    let userHtml = '<p class="userText"><span>' + sampleText + '</span></p>';
+
+    $("#textInput").val("");
+    $("#chatbox").append(userHtml);
+    document.getElementById("chat-bar-bottom").scrollIntoView(true);
+
+
+}
+
+function sendButton() {
+    getResponse();
+}
+
+
+$("#textInput").keypress(function (e) {
+    if (e.which == 13) {
+        getResponse();
+    }
+});
+
+
+
+function getBotResponse(input) 
+{
+    
+    if (input.includes("Hello")||input.includes("ok")||input.includes("thanks")||input.includes("hi")) 
+    {
+        return "Hello! how can I help you.";
+    } 
+    else if (input.includes("website")) 
+    {
+        return "Behance, part of Adobe, is the leading online platform to showcase & discover creative work. Creative people around the world join Behance, entering a community made with their original work and creative process in mind.";
+    }
+    else if (input.includes("what")) 
+    {
+        return "Behance, part of Adobe, is the leading online platform to showcase & discover creative work. Creative people around the world join Behance, entering a community made with their original work and creative process in mind.";
+    }
+    else if (input.includes("search")) 
+    {
+        return "you can search the image by entering your text in the search box";
+    }
+    else if (input.includes("sort")) 
+    { 
+        return "you can sort the image by selecting the otion in the search box";
+    }
+}
+</script>
+
+
+    
+
+</html>
